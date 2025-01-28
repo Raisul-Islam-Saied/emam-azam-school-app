@@ -1,0 +1,158 @@
+@import "keep-react/src/main.min.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .chat-height {
+    @apply h-[calc(100vh_-_8.125rem)] lg:h-[calc(100vh_-_5.625rem)];
+  }
+  .inbox-height {
+    @apply h-[calc(100vh_-_8.125rem)] lg:h-[calc(100vh_-_5.625rem)];
+  }
+  .linkActive {
+    @apply bg-slate-800 text-slate-100;
+  }
+
+  .animaiton-delay-2000 {
+    animation-delay: 4s;
+  }
+  .animaiton-delay-4000 {
+    animation-delay: 4s;
+  }
+  .scrollbar::-webkit-scrollbar {
+    @apply w-[6px] h-[6px];
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    @apply rounded-full p-6;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-slate-400/40 hover:bg-slate-400/70 cursor-pointer;
+  }
+
+  .material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  }
+  .text-body {
+    @apply text-lg;
+  }
+
+  element.style {
+  }
+  .space-y-4 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-y-reverse: 0;
+    margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+    margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+  }
+
+  .text-link {
+    --tw-text-opacity: 1;
+    color: rgb(109 40 217 / var(--tw-text-opacity));
+  }
+  .gradient-primary {
+    background: linear-gradient(
+      180deg,
+      #f8fafc,
+      rgba(242, 202, 252, 0.11) 34.69%,
+      rgba(250, 198, 252, 0.11) 44.06%,
+      rgba(175, 183, 255, 0.11) 54.48%,
+      rgba(142, 220, 200, 0.07) 64.9%,
+      #f8fafc 97.95%
+    );
+  }
+}
+@layer base {
+  @font-face {
+    font-family: "Hind Siliguri";
+    font-weight: 400;
+    src: url("./fonts/Hind_Siliguri/HindSiliguri-Regular.ttf");
+  }
+  @font-face {
+    font-family: "Hind Siliguri";
+    font-weight: 500;
+    src: url("./fonts/Hind_Siliguri/HindSiliguri-Medium.ttf");
+  }
+  @font-face {
+    font-family: "Hind Siliguri";
+    font-weight: 600;
+    src: url("./fonts/Hind_Siliguri/HindSiliguri-SemiBold.ttf");
+  }
+  @font-face {
+    font-family: "Hind Siliguri";
+    font-weight: 700;
+    src: url("./fonts/Hind_Siliguri/HindSiliguri-Bold.ttf");
+  }
+
+  @font-face {
+    font-family: "Noto Serif Bengali";
+    font-weight: 400;
+    src: url("./fonts/Noto_Serif_Bengali/static/NotoSerifBengali-Regular.ttf");
+  }
+
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+}
+
+@layer components {
+  .class-day::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #ff5722;
+    transform: translateY(-50%);
+  }
+
+  .primary-highlighter {
+    position: relative;
+    --tw-text-opacity: 1 !important;
+    color: rgb(109 40 217 / var(--tw-text-opacity));
+    @apply dark:text-sky-500;
+  }
+
+  .largeNavLink {
+    @apply rounded-md p-2 px-4 hover:bg-slate-800  hover:text-slate-100 transition ease-in-out cursor-pointer flex justify-center items-center focus:bg-slate-800 focus:text-slate-100;
+  }
+  .section3-grid {
+    @apply flex flex-col border border-slate-200 items-center dark:border-slate-300/10 dark:bg-slate-800/30  justify-center rounded-md p-6 py-12 bg-slate-100/70 gap-3  transition-transform duration-500 hover:scale-105;
+  }
+  .handelInput {
+    @apply p-[8px] px-3     focus:outline-none  block w-full rounded-[3px] sm:text-sm  bg-white border  outline-none
+   placeholder:text-gray-300 focus:ring-1 autofill:text-green-400  focus:ring-sky-500 placeholder-slate-400  dark:border-none focus:border-sky-500 
+        dark:placeholder:text-slate-500
+         dark:bg-slate-700/30;
+  }
+
+  .btnLink {
+    @apply flex gap-2 text-[13px] rounded-full border p-[3px]  px-4 justify-center items-center border-violet-600 text-violet-600 transition duration-200 hover:bg-violet-400/10
+    dark:text-sky-500 dark:border-sky-500
+    lg:text-[10px];
+  }
+ 
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
