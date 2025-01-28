@@ -16,8 +16,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <QueryClientProvider client={queryClient}>
        
         <AuthProvider>
-          {/* <App /> */}
-          <p>this site is under maintanes</p>        </AuthProvider>
+          <App />
+        </AuthProvider>
         <ReactQueryDevtools />
       </QueryClientProvider>
     </BrowserRouter>
