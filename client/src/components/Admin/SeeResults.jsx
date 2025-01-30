@@ -1,42 +1,28 @@
-import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Transition } from "@headlessui/react";
+import React, { useEffect, useState } from "react";
 import FormControl from "../FormControl/FormControl";
 import Input from "../FormControl/Input";
-import { nameOfClass, exam_name, sakha, subjects } from "../data.json";
+import { exam_name, nameOfClass, sakha } from "../data.json";
+//hello
 import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "react-query";
-import axios from "axios";
-import { Link } from "react-router-dom";
-import FormTitle from "../FormControl/FormTitle";
-import Select from "../FormControl/Select";
-import FormCommonError from "../FormControl/FormCommonError";
-import { useFormik } from "formik";
-import { object, string, ref, number, array } from "yup";
-import Button from "../Button";
-import PageTitle from "../Heading/PageTitle";
-import PageHead from "../Heading/PageHead";
-import PageSubtitle from "../Heading/PageSubtitle";
-import Stepper from "../Stepper";
-import toast from "react-hot-toast";
-import SubjectTableLt from "../result/SubjectTableLt";
-import convertToBanglaNumber from "../../helper/convertToBanglaNumber";
-import {
-  EyeSlashIcon,
   PrinterIcon,
-  TrashIcon,
+  TrashIcon
 } from "@heroicons/react/20/solid";
-import { EyeDropperIcon, EyeIcon } from "@heroicons/react/24/outline";
-import NoData from "../NoData";
-import Modal from "./Modal";
-import Loader from "../Loader";
-import Switch1 from "../Switch";
-import SwitcherOne from "../SwitcherOne";
+import { EyeIcon } from "@heroicons/react/24/outline";
+import axios from "axios";
+import { useFormik } from "formik";
+import {
+  useQuery,
+  useQueryClient
+} from "react-query";
+import convertToBanglaNumber from "../../helper/convertToBanglaNumber";
 import useFetch from "../../hooks/useFetch";
+import Button from "../Button";
+import Select from "../FormControl/Select";
+import Loader from "../Loader";
+import NoData from "../NoData";
+import SwitcherOne from "../SwitcherOne";
+import Modal from "./Modal";
 // Define Bangla day names
 const banglaDayNames = [
   "শনিবার",
