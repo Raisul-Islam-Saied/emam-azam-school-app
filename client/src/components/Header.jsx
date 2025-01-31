@@ -53,9 +53,8 @@ const Header = ({ sidebarOpen, setSidebarOpen }) => {
           </button>
           {/* <!-- Hamburger Toggle BTN --> */}
 
-          <Link className="block flex-shrink-0 lg:hidden" to="/">
-            <img loading="lazy" src={Logo} alt="Logo" />
-          </Link>
+         
+          
         </div>
 
         <div className="hidden sm:block">

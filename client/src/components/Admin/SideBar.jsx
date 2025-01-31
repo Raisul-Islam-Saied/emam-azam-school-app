@@ -1,6 +1,6 @@
+import { Transition } from "@headlessui/react";
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Transition } from "@headlessui/react";
 
 const menu = [
   {
@@ -79,7 +79,7 @@ function SideBar({ showNav, setShowNav }) {
   return (
     <div
       id="docs-Index"
-      className={` -translate-x-full transition-transform duration-300 transform  fixed top-0 pl-6 left-0 bottom-0 z-1 w-[16rem]  bg-white/60 border-r border-gray-200/80  pb-10 overflow-y-auto scrollbar-y lg:block lg:translate-x-0 lg:right-auto lg:bottom-0 dark:scrollbar-y dark:bg-slate-900 dark:border-gray-700 mt-[6rem] h-screen  m-auto z-10 backdrop-blur-lg ${
+      className={` -translate-x-full transition-transform duration-300 transform  fixed top-0 pl-6 left-0 bottom-0 w-[16rem]  bg-white/60 border-r border-gray-200/80  pb-10 overflow-y-auto scrollbar-y lg:block lg:translate-x-0 lg:right-auto lg:bottom-0 dark:scrollbar-y dark:bg-slate-900 dark:border-gray-700 mt-[6rem] h-screen  m-auto z-10 backdrop-blur-lg ${
         showNav
           ? " translate-x-0 lg:right-auto bottom-0 scrollbar-y h-screen mt-[7rem]"
           : ""

@@ -18,6 +18,7 @@ import { object, string, ref, number, array } from "yup";
 import toast from "react-hot-toast";
 import FormCommonError from "./FormControl/FormCommonError";
 import useFetch from "../hooks/useFetch";
+import Password from "./FormControl/Password";
 
 function LoginForm() {
   const { error, isLoading, mutation } = useFetch();
@@ -114,10 +115,10 @@ function LoginForm() {
             title="পাসওয়ার্ড দিন "
             subtitle="পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে এবং সেখানে কমপক্ষে 1 টি লেটার এবং 1 টি নাম্বার থাকতেই হবে।"
           />
-          <Input
+          <Password
             name="password"
             placeholder="45sd!@aqwer"
-            type="password"
+            type="text"
             onChange={formik.handleChange}
             value={formik.values.password}
             errorMessage={
