@@ -2,7 +2,7 @@ const users = [
   {
     name: "Miguel Cook",
     email: "raisulislamsaied@gmail.com",
-    password: "eLsE15==(#).=?", confirm_password: "eLsE15==(#).=?",
+    password: "saied783..", confirm_password: "saied783..",
     gender:'male',
     address : 'hollow sail diagram health purpose including day notice wonder twice important nest till floor its quiet dawn needs personal shop perhaps luck situation soon',
     phone : '+880185465474551'
