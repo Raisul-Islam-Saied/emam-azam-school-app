@@ -40,9 +40,9 @@ function Hero({ refarence }) {
               জ্ঞানে প্রবেশ করুন, আলোকিত ভবিষ্যতের দিকে
             </p>
             <h1 className="text-[2.2rem] font-extrabold text-gray-800 dark:text-slate-100 text-center lg:text-left ">
-              <span className="text-blue-500">ইমাম আজম </span>
+              <span className="text-blue-500">রায়সুল</span>
               <br className="md:hidden lg:block" />
-              আবু হানিফা (রাহ:) স্কুল
+              ইসলাম সাঈদ স্কুল
             </h1>
 
             <p className="font-semibold ">
