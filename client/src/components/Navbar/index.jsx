@@ -15,9 +15,9 @@ function Navbar() {
         <div className="w-screen  flex flex-row px-6 flex-shrink-0 items-center justify-between h-16 ">
           <div className="brand">
             <div className=" flex flex-col text-violet-700 dark:text-violet-500">
-              <span>ইমাম আজম</span>{" "}
+              <span>রায়সুল</span>{" "}
               <span className="text-blue-500 dark:text-blue-500">
-                আবু হানিফা (র:) স্কুল
+                ইসলাম সাঈদ স্কুল
               </span>
             </div>
           </div>
