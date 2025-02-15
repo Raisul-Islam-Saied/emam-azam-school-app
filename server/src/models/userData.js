@@ -4,6 +4,7 @@ const users = [
     email: "raisulislamsaied@gmail.com",
     password: "saied783..", confirm_password: "saied783..",
     gender:'male',
+    role:"admin",
     address : 'hollow sail diagram health purpose including day notice wonder twice important nest till floor its quiet dawn needs personal shop perhaps luck situation soon',
     phone : '+880185465474551'
   },
