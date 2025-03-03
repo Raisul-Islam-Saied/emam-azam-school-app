@@ -46,7 +46,7 @@ function Hero({ refarence }) {
             </h1>
 
             <p className="font-semibold ">
-              পশ্চিম সরফভাটা, সরফভাটা , রাঙ্গুনিয়া , চট্টগ্রাম
+              
             </p>
           </div>
           <p className="py-6 text-center text-md opacity-70 font-normal lg:text-left">
