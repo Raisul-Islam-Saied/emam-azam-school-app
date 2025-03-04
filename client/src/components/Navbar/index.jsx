@@ -18,7 +18,7 @@ function Navbar() {
             <Link to="/" className="flex flex-col text-violet-700 dark:text-violet-500">
               <span>রায়সুল</span>{" "}
               <span className="text-blue-500 dark:text-blue-500">
-                ইসলাম সাঈদ স্কুল
+                ইসলাম সাঈদ
               </span>
             </Link>
           </div>
