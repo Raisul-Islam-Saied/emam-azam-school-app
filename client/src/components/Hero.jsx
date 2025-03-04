@@ -42,7 +42,7 @@ function Hero({ refarence }) {
             <h1 className="text-[2.2rem] font-extrabold text-gray-800 dark:text-slate-100 text-center lg:text-left ">
               <span className="text-blue-500">রায়সুল </span>
               <br className="md:hidden lg:block" />
-              ইসলাম সাঈদ স্কুল
+              ইসলাম সাঈদ
             </h1>
 
             <p className="font-semibold "> Raisul Islam Saied
