@@ -37,14 +37,7 @@ const Section1 = () => {
         </PageTitle>
         <div className="grid items-center justify-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3  border border-gray-400/20 rounded-md shadow-xl mt-10  dark:bg-slate-800/[0.6] bg-white p-6 ">
           <div className="p-8 h-[18rem] md:py-10 border-b border-b-slate-300   mx-auto dark:border-slate-600 md:border-r border-r-slate-300  ">
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={visible && { scale: 1 }}
-              transition={{
-                type: "spring",
-                stiffness: 260,
-                damping: 20,
-              }}
+            <div
               className="flex flex-col justify-center items-center text-center   cursor-pointer gap-2 duration-500  transition-transform hover:scale-105 "
             >
               <CalendarIcon className="w-[3rem] stroke-violet-600 dark:stroke-blue-500 " />
@@ -56,7 +49,7 @@ const Section1 = () => {
                 কোর্সে আমরা মিলেমিশে 10 টি প্রজেক্ট করবো। কিছু প্রজেক্ট সরাসরি
                 মডিউলে করে দেখানো হবে এবং কিছু নিজেরা করবেন।
               </p>
-            </motion.div>
+            </div>
           </div>{" "}
           <div className="p-8 h-[18rem] md:py-10 border-b border-b-slate-300  mx-auto dark:border-slate-600 lg:border-r border-r-slate-300 ">
             <div className="flex flex-col justify-center items-center text-center   cursor-pointer gap-2 duration-500  transition-transform hover:scale-105 ">
