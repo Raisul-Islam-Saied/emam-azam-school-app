@@ -183,7 +183,6 @@ const App = () => {
   setProcessing(false);
 };
 
-
 const handleExportTablePDF = () => {
   const data = getFilteredData();
   if (!data || data.length === 0) {
@@ -207,10 +206,18 @@ const handleExportTablePDF = () => {
       th { background:#eee; text-align:center; }
 
       /* Column sizing */
-      .col-small { width: 15%; text-align:center; }
-      .col-main { width: 23%; }
+      .col-small { width: 12%; text-align:center; }
+      .col-name { width: 26%; }
+      .col-family { width: 26%; }
+      .col-address { width: 24%; }
 
-      img { width:40px; height:40px; object-fit:cover; }
+      img {
+        width:100%;
+        max-width:50px;
+        height:auto;
+        object-fit:contain;
+        border-radius:4px;
+      }
 
       .block div { margin:2px 0; }
       .label { font-weight:bold; }
@@ -221,10 +228,10 @@ const handleExportTablePDF = () => {
     <table>
       <tr>
         <th class="col-small">Photo</th>
-        <th class="col-main">Name Info</th>
+        <th class="col-name">Name Info</th>
         <th class="col-small">Class Info</th>
-        <th class="col-main">Family & Phone</th>
-        <th class="col-main">Address</th>
+        <th class="col-family">Family & Phone</th>
+        <th class="col-address">Address</th>
       </tr>
       ${data.map(s => `
         <tr>
@@ -232,7 +239,7 @@ const handleExportTablePDF = () => {
             <img src="${s.ImageURL || ''}" />
           </td>
 
-          <td class="col-main block">
+          <td class="col-name block">
             <div><span class="label">নাম:</span> ${s.StudentNameBn || ''}</div>
             <div><span class="label">Name:</span> ${s.StudentNameEn || ''}</div>
             <div><span class="label">ID:</span> ${s.ID || ''}</div>
@@ -244,13 +251,13 @@ const handleExportTablePDF = () => {
             <div><span class="label">Blood:</span> ${s.BloodGroup || ''}</div>
           </td>
 
-          <td class="col-main block">
+          <td class="col-family block">
             <div><span class="label">পিতা:</span> ${s.FatherNameBn || ''}</div>
             <div><span class="label">মাতা:</span> ${s.MotherNameBn || ''}</div>
             <div><span class="label">Phone:</span> ${s.WhatsApp || ''}</div>
           </td>
 
-          <td class="col-main block">
+          <td class="col-address block">
             <div>
               ${s.HouseNameBn || ''}, ${s.VillageBn || ''}, 
               ${s.UnionBn || ''}, ${s.UpazilaBn || ''}, 
