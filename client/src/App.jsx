@@ -95,7 +95,10 @@ const StudentRow = ({ data, onClick }) => (
 // ==============================================
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(() => {
+  const saved = localStorage.getItem("edubase_user");
+  return saved ? JSON.parse(saved) : null;
+});
   const [tab, setTab] = useState('home');
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -330,23 +333,31 @@ const handleExportPDF = () => {
         @page { size: A4; margin: 10mm; }
       }
       body { font-family: sans-serif; padding: 10px; }
+
+      .page {
+        height: 100%;
+        page-break-after: always;
+      }
+
       .student-card {
         border: 2px solid #000;
         padding: 15px;
-        margin: 5px;
-        width: 48%;
-        display: inline-block;
-        vertical-align: top;
+        margin-bottom: 10px;
+        width: 100%;
+        height: 48%;
         box-sizing: border-box;
         page-break-inside: avoid;
       }
+
       .header { 
         text-align: center; 
         border-bottom: 2px solid #333; 
         padding-bottom: 5px; 
         margin-bottom: 10px; 
       }
+
       .row { display: flex; gap: 15px; }
+
       .photo-box { width: 100px; text-align:center; }
       .photo-box img { 
         width: 100px; 
@@ -354,22 +365,27 @@ const handleExportPDF = () => {
         border: 1px solid #000; 
         object-fit: contain; 
       }
+
       .info-box { flex: 1; }
+
       .field-row { 
         display: flex; 
         border-bottom: 1px solid #eee; 
         padding: 3px 0; 
       }
+
       .field-label { 
         width: 130px; 
         font-weight: bold; 
         font-size: 11px; 
         color: #555; 
       }
+
       .field-val { 
         font-size: 11px; 
         font-weight: bold; 
       }
+
       .section-title { 
         font-size: 12px; 
         font-weight: bold; 
@@ -380,20 +396,26 @@ const handleExportPDF = () => {
     </style>
   `);
   printWindow.document.write('</head><body>');
-  
-  dataToExport.forEach(s => {
+
+  dataToExport.forEach((s, i) => {
+    if (i % 2 === 0) {
+      printWindow.document.write(`<div class="page">`);
+    }
+
     printWindow.document.write(`
       <div class="student-card">
         <div class="header">
           <h3 style="margin:0">${CONFIG.APP_NAME}</h3>
           <p style="margin:0; font-size:11px;">Student Profile | ID: ${s.ID}</p>
         </div>
+
         <div class="row">
           <div class="photo-box">
             <img src="${s.ImageURL}" alt="Photo"/>
             <div style="font-weight:bold; margin-top:4px;">Roll: ${s.Roll}</div>
             <div style="font-size:11px;">Class: ${s.ClassEn}</div>
           </div>
+
           <div class="info-box">
             <div class="section-title">BASIC INFORMATION</div>
             <div class="field-row">
@@ -440,6 +462,10 @@ const handleExportPDF = () => {
         </div>
       </div>
     `);
+
+    if (i % 2 === 1 || i === dataToExport.length - 1) {
+      printWindow.document.write(`</div>`);
+    }
   });
 
   printWindow.document.write('</body></html>');
@@ -460,7 +486,10 @@ const handleExportPDF = () => {
   return <LoginPage onLogin={() => setIsLoggedIn(true)} />;
 }
 if (!currentUser) {
-  return <LoginPage onLogin={(u) => setCurrentUser(u)} />;
+  return <LoginPage onLogin={(u) => {
+  localStorage.setItem("edubase_user", JSON.stringify(u));
+  setCurrentUser(u);
+}} />;
 }
   return (
     
