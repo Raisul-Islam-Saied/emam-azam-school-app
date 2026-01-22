@@ -732,7 +732,7 @@ const FullForm = ({ initialData, onSave, onCancel }) => {
 
   unionBn: initialData.UnionBn || '',
   unionEn: initialData.UnionEn || '',
-
+wardNo: initialData.WardNo || '',
   upazilaBn: initialData.UpazilaBn || '',
   upazilaEn: initialData.UpazilaEn || '',
 
