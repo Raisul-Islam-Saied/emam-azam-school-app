@@ -182,7 +182,49 @@ const App = () => {
   }
   setProcessing(false);
 };
-
+const handleExportTablePDF = () => {
+  const data = getFilteredData();
+  const w = window.open('');
+  w.document.write(`
+  <html>
+  <head>
+    <style>
+      @media print { @page { size: A4; margin: 10mm; } }
+      table { width:100%; border-collapse: collapse; font-size:10px; }
+      th, td { border:1px solid #000; padding:4px; text-align:center; }
+      th { background:#eee; }
+    </style>
+  </head>
+  <body>
+    <h2>${CONFIG.APP_NAME} - Student List</h2>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Class</th>
+        <th>Roll</th>
+        <th>Mobile</th>
+        <th>DOB</th>
+        <th>Blood</th>
+      </tr>
+      ${data.map(s => `
+        <tr>
+          <td>${s.ID}</td>
+          <td>${s.StudentNameEn}</td>
+          <td>${s.ClassEn}</td>
+          <td>${s.Roll}</td>
+          <td>${s.WhatsApp}</td>
+          <td>${formatDate(s.DOB)}</td>
+          <td>${s.BloodGroup}</td>
+        </tr>
+      `).join('')}
+    </table>
+    <script>window.print()</script>
+  </body>
+  </html>
+  `);
+  w.document.close();
+};
   // --- EXPORT FUNCTIONS ---
   const getFilteredData = () => {
     if (exportClass === 'All') return students;
@@ -355,6 +397,10 @@ const App = () => {
                 <button onClick={handleExportPDF} className="bg-red-100 p-2.5 rounded-lg text-red-700 hover:bg-red-200 transition">
                   <Printer size={20} />
                 </button>
+                <button onClick={handleExportTablePDF}
+ className="bg-blue-100 p-2.5 rounded-lg text-blue-700">
+  <Layers size={20}/>
+</button>
               </div>
             </div>
 
