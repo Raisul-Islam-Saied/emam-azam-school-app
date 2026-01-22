@@ -200,7 +200,7 @@ const handleExportTablePDF = () => {
       body { font-family: sans-serif; font-size: 10px; }
       h2 { text-align:center; margin-bottom:8px; }
       table { width:100%; border-collapse: collapse; }
-      th, td { border:1px solid #000; padding:4px; vertical-align: top; }
+      th, td { border:1px solid #000; padding:5px; vertical-align: top; }
       th { background:#eee; text-align:center; }
       img { width:45px; height:45px; object-fit:cover; }
       .block div { margin:2px 0; }
@@ -212,9 +212,10 @@ const handleExportTablePDF = () => {
     <table>
       <tr>
         <th>Photo</th>
-        <th>Basic Info</th>
-        <th>Family</th>
-        <th>Other Details</th>
+        <th>Name Info</th>
+        <th>Class Info</th>
+        <th>Family & Phone</th>
+        <th>Address</th>
       </tr>
       ${data.map(s => `
         <tr>
@@ -226,21 +227,25 @@ const handleExportTablePDF = () => {
             <div><span class="label">নাম:</span> ${s.StudentNameBn || ''}</div>
             <div><span class="label">Name:</span> ${s.StudentNameEn || ''}</div>
             <div><span class="label">ID:</span> ${s.ID || ''}</div>
-            <div><span class="label">Roll/Class:</span> ${s.Roll || ''} / ${s.ClassEn || s.ClassBn || ''}</div>
+          </td>
+
+          <td class="block">
+            <div><span class="label">Class:</span> ${s.ClassEn || s.ClassBn || ''}</div>
+            <div><span class="label">Roll:</span> ${s.Roll || ''}</div>
+            <div><span class="label">Blood:</span> ${s.BloodGroup || ''}</div>
           </td>
 
           <td class="block">
             <div><span class="label">পিতা:</span> ${s.FatherNameBn || ''}</div>
             <div><span class="label">মাতা:</span> ${s.MotherNameBn || ''}</div>
+            <div><span class="label">Phone:</span> ${s.WhatsApp || ''}</div>
           </td>
 
           <td class="block">
-            <div><span class="label">Mobile:</span> ${s.WhatsApp || ''}</div>
-            <div><span class="label">Blood:</span> ${s.BloodGroup || ''}</div>
-            <div><span class="label">BRN:</span> ${s.BRN || ''}</div>
-            <div><span class="label">DOB:</span> ${formatDate(s.DOB)}</div>
-            <div><span class="label">ঠিকানা:</span> 
-              ${s.HouseNameBn || ''}, ${s.VillageBn || ''}, ${s.UnionBn || ''}, ${s.UpazilaBn || ''}, ${s.DistrictBn || ''}
+            <div>
+              ${s.HouseNameBn || ''}, ${s.VillageBn || ''}, 
+              ${s.UnionBn || ''}, ${s.UpazilaBn || ''}, 
+              ${s.DistrictBn || ''}
             </div>
           </td>
         </tr>
