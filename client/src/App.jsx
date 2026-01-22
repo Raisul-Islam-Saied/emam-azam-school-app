@@ -186,68 +186,72 @@ const App = () => {
 
 const handleExportTablePDF = () => {
   const data = getFilteredData();
-  if (!data || data.length === 0) {
-    alert("ডাটা নেই");
-    return;
-  }
+  if(data.length === 0) return alert("ডাটা নেই");
 
   const w = window.open('', '_blank');
   w.document.write(`
   <html>
   <head>
-    <title>${CONFIG.APP_NAME} - Register</title>
+    <title>${CONFIG.APP_NAME} - Full Register</title>
     <style>
       @media print { @page { size: A4; margin: 10mm; } }
       body { font-family: sans-serif; font-size: 10px; }
-      .student { border-bottom: 1px dashed #000; padding: 6px 0; margin-bottom: 6px; }
-      .top { display:flex; gap:10px; align-items:center; }
+      h2 { text-align:center; margin-bottom:10px; }
+      .student {
+        border-bottom: 1px dashed #000;
+        padding: 6px 0;
+        margin-bottom: 6px;
+      }
+      .top { display:flex; align-items:center; gap:10px; }
       .photo { width:50px; height:50px; object-fit:cover; border:1px solid #000; }
       .row { margin:2px 0; }
       .label { font-weight:bold; }
     </style>
   </head>
   <body>
-    <h2 style="text-align:center">${CONFIG.APP_NAME} - Student Register</h2>
+    <h2>${CONFIG.APP_NAME} - Student Register (Detailed)</h2>
 
     ${data.map(s => `
       <div class="student">
         <div class="top">
-          <img src="${s.ImageURL || ''}" class="photo"/>
+          <img src="${s.ImageURL}" class="photo"/>
           <div>
-            <div class="row">
-              <span class="label">ID:</span> ${s.ID || ''} |
-              <span class="label">Roll:</span> ${s.Roll || ''} |
-              <span class="label">Class:</span> ${s.ClassEn || s.ClassBn || ''} |
-              <span class="label">Session:</span> ${s.Session || ''}
+            <div class="row"><span class="label">ID:</span> ${s.ID} |
+              <span class="label">Roll:</span> ${s.Roll} |
+              <span class="label">Class:</span> ${s.ClassEn} |
+              <span class="label">Session:</span> ${s.Session}
             </div>
-            <div class="row">
-              <span class="label">Name:</span> 
-              ${s.StudentNameBn || ''} / ${s.StudentNameEn || ''}
+            <div class="row"><span class="label">Name:</span> 
+              ${s.StudentNameBn} / ${s.StudentNameEn}
             </div>
           </div>
         </div>
 
-        <div class="row"><span class="label">Father:</span> ${s.FatherNameBn || ''} / ${s.FatherNameEn || ''}</div>
-        <div class="row"><span class="label">Mother:</span> ${s.MotherNameBn || ''} / ${s.MotherNameEn || ''}</div>
+        <div class="row"><span class="label">Father:</span> 
+          ${s.FatherNameBn} / ${s.FatherNameEn}
+        </div>
+        <div class="row"><span class="label">Mother:</span> 
+          ${s.MotherNameBn} / ${s.MotherNameEn}
+        </div>
 
         <div class="row">
           <span class="label">DOB:</span> ${formatDate(s.DOB)} |
-          <span class="label">Blood:</span> ${s.BloodGroup || ''} |
-          <span class="label">BRN:</span> ${s.BRN || ''}
+          <span class="label">Blood:</span> ${s.BloodGroup} |
+          <span class="label">BRN:</span> ${s.BRN}
         </div>
 
         <div class="row">
-          <span class="label">Mobile:</span> ${s.WhatsApp || ''} |
-          <span class="label">Emergency:</span> ${s.EmergencyNo || ''}
+          <span class="label">Mobile:</span> ${s.WhatsApp} |
+          <span class="label">Emergency:</span> ${s.EmergencyNo}
         </div>
 
         <div class="row">
-          <span class="label">Address (Bn):</span>
-          ${s.HouseNameBn || ''}, ${s.VillageBn || ''}, ${s.UnionBn || ''}, ${s.UpazilaBn || ''}, ${s.DistrictBn || ''}
+          <span class="label">Address (Bn):</span> 
+          ${s.HouseNameBn}, ${s.VillageBn}, ${s.UnionBn}, ${s.UpazilaBn}, ${s.DistrictBn}
         </div>
         <div class="row">
-          <span class="label">Address (En):</span>
-          ${s.HouseNameEn || ''}, ${s.VillageEn || ''}, ${s.UnionEn || ''}, ${s.UpazilaEn || ''}, ${s.DistrictEn || ''}
+          <span class="label">Address (En):</span> 
+          ${s.HouseNameEn}, ${s.VillageEn}, ${s.UnionEn}, ${s.UpazilaEn}, ${s.DistrictEn}
         </div>
       </div>
     `).join('')}
@@ -258,6 +262,12 @@ const handleExportTablePDF = () => {
   `);
   w.document.close();
 };
+  // --- EXPORT FUNCTIONS ---
+  const getFilteredData = () => {
+    if (exportClass === 'All') return students;
+    return students.filter(s => s.ClassBn === exportClass);
+  };
+
   // EXCEL EXPORT (ALL FIELDS)
   const handleExportExcel = () => {
     const dataToExport = getFilteredData();
@@ -1073,5 +1083,4 @@ const InfoCard = ({ title, icon: Icon, items }) => (
 );
 
 export default App;
-
 
