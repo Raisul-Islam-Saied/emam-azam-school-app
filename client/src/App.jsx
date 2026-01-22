@@ -21,10 +21,19 @@ const CONFIG = {
   UPLOAD_PRESET: "student_db", 
   APP_NAME: "Abdur Razzaq Dakhil Madrasah ",
   USERS: [
-    { username: "admin", password: "1234", role: "Admin" },
-    { username: "teacher", password: "1111", role: "Teacher" },
-    { username: "office", password: "2222", role: "Office" }
-  ]
+  { username: "admin", password: "1234", role: "Admin" },
+
+  { username: "class1", password: "1111", role: "Class", classBn: "১ম" },
+  { username: "class2", password: "2222", role: "Class", classBn: "২য়" },
+  { username: "class3", password: "3333", role: "Class", classBn: "৩য়" },
+  { username: "class4", password: "4444", role: "Class", classBn: "৪র্থ" },
+  { username: "class5", password: "5555", role: "Class", classBn: "৫ম" },
+  { username: "class6", password: "6666", role: "Class", classBn: "৬ষ্ঠ" },
+  { username: "class7", password: "7777", role: "Class", classBn: "৭ম" },
+  { username: "class8", password: "8888", role: "Class", classBn: "৮ম" },
+  { username: "class9", password: "9999", role: "Class", classBn: "৯ম" },
+  { username: "class10", password: "1010", role: "Class", classBn: "১০ম" }
+]
 };
 const formatDate = (dateStr) => {
   if(!dateStr) return 'N/A';
@@ -102,7 +111,16 @@ const App = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [processing, setProcessing] = useState(false);
-  
+  const roleFilteredStudents = useMemo(() => {
+  if (!currentUser) return [];
+
+  if (currentUser.role === "Admin") return students;
+
+  if (currentUser.role === "Class")
+    return students.filter(s => s.ClassBn === currentUser.classBn);
+
+  return [];
+}, [students, currentUser]);
   // Export State
   const [exportClass, setExportClass] = useState('All');
   
@@ -125,6 +143,13 @@ const App = () => {
   };
 
   const handleSave = async (formData) => {
+    if (
+  currentUser.role === "Class" &&
+  formData.classBn !== currentUser.classBn
+) {
+  alert("আপনি শুধু নিজের ক্লাসে ডাটা দিতে পারবেন");
+  return;
+}
     setProcessing(true);
     try {
       let imgUrl = formData.imageUrl;
@@ -165,12 +190,11 @@ const App = () => {
   };
 
   const handleDelete = async (id) => {
-  const today = new Date().getDate(); 
-  const code = `delete${today}`;
-  
-  const input = prompt(`Password`);
-  if (input !== code) {
-    alert("ভুল কোড! ডিলিট বাতিল।");
+  if (
+    currentUser.role === "Class" &&
+    detailData.ClassBn !== currentUser.classBn
+  ) {
+    alert("আপনি এই ক্লাসের ডাটা ডিলিট করতে পারবেন না");
     return;
   }
 
@@ -282,9 +306,11 @@ const handleExportTablePDF = () => {
 };
   // --- EXPORT FUNCTIONS ---
   const getFilteredData = () => {
-    if (exportClass === 'All') return students;
-    return students.filter(s => s.ClassBn === exportClass);
-  };
+  const base = roleFilteredStudents; // 🔐 এখানেই আসল সিকিউরিটি
+
+  if (exportClass === 'All') return base;
+  return base.filter(s => s.ClassBn === exportClass);
+};
 
   // EXCEL EXPORT (ALL FIELDS)
   const handleExportExcel = () => {
@@ -472,15 +498,15 @@ const handleExportPDF = () => {
   printWindow.print();
 };
   const filteredList = useMemo(() => {
-    if (!searchText) return students;
+    if (!searchText) return roleFilteredStudents;
     const lower = searchText.toLowerCase();
-    return students.filter(s => 
+    return roleFilteredStudents.filter(s => 
       (s.StudentNameBn && s.StudentNameBn.toLowerCase().includes(lower)) || 
       (s.ID && s.ID.toString().includes(lower)) ||
       (s.Roll && s.Roll.toString().includes(lower)) ||
       (s.WhatsApp && s.WhatsApp.includes(lower))
     );
-  }, [students, searchText]);
+  }, [roleFilteredStudents, searchText]);
   
 if (!currentUser) {
   return <LoginPage onLogin={(u) => {
@@ -514,10 +540,10 @@ if (!currentUser) {
             <div className="bg-slate-900 p-6 rounded-3xl text-white shadow-2xl shadow-slate-300 mb-8 relative overflow-hidden">
               <div className="relative z-10">
                 <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">Total Database</p>
-                <h2 className="text-4xl font-black">{students.length}</h2>
+                <h2 className="text-4xl font-black">{roleFilteredStudents.length}</h2>
                 <div className="mt-4 flex gap-3">
-                   <div className="bg-white/10 px-3 py-1 rounded-lg text-xs font-medium">Class 6: {students.filter(s=>s.ClassBn=='৬ষ্ঠ').length}</div>
-                   <div className="bg-white/10 px-3 py-1 rounded-lg text-xs font-medium">Class 10: {students.filter(s=>s.ClassBn=='১০ম').length}</div>
+                   <div className="bg-white/10 px-3 py-1 rounded-lg text-xs font-medium">Class 6: {roleFilteredStudents.filter(s=>s.ClassBn=='৬ষ্ঠ').length}</div>
+                   <div className="bg-white/10 px-3 py-1 rounded-lg text-xs font-medium">Class 10: {roleFilteredStudents.filter(s=>s.ClassBn=='১০ম').length}</div>
                 </div>
               </div>
               <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-blue-600 rounded-full blur-[50px] opacity-50"></div>
@@ -560,7 +586,7 @@ if (!currentUser) {
                  {[1,2,3].map(i => <div key={i} className="h-20 bg-gray-200 rounded-2xl animate-pulse"/>)}
                </div>
             ) : (
-              students.slice(0, 15).map((s, i) => (
+              roleFilteredStudents.slice(0, 15).map((s, i) => (
                 <StudentRow key={i} data={s} onClick={setDetailData} />
               ))
             )}
