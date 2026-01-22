@@ -94,7 +94,6 @@ const StudentRow = ({ data, onClick }) => (
 // 4. MAIN APP LOGIC
 // ==============================================
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState(() => {
   const saved = localStorage.getItem("edubase_user");
   return saved ? JSON.parse(saved) : null;
@@ -482,14 +481,12 @@ const handleExportPDF = () => {
       (s.WhatsApp && s.WhatsApp.includes(lower))
     );
   }, [students, searchText]);
-  if (!isLoggedIn) {
-  return <LoginPage onLogin={() => setIsLoggedIn(true)} />;
-}
+  
 if (!currentUser) {
   return <LoginPage onLogin={(u) => {
-  localStorage.setItem("edubase_user", JSON.stringify(u));
-  setCurrentUser(u);
-}} />;
+    localStorage.setItem("edubase_user", JSON.stringify(u));
+    setCurrentUser(u);
+  }} />;
 }
   return (
     
