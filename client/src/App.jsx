@@ -704,25 +704,43 @@ const FullForm = ({ initialData, onSave, onCancel }) => {
       };
 
       setForm({
-        sessionYear: initialData.Session || new Date().getFullYear().toString(),
-        studentId: initialData.ID || '',
-        studentNameBn: initialData.StudentNameBn || '', studentNameEn: initialData.StudentNameEn || '',
-        roll: initialData.Roll || '', classBn: initialData.ClassBn || '',
-        brn: initialData.BRN ? initialData.BRN.toString().replace(/['"]/g, '') : '',
-        dob: parseDate(initialData.DOB),
-        bloodGroup: initialData.BloodGroup || '',
-        fatherNameBn: initialData.FatherNameBn || '',
-        motherNameBn: initialData.MotherNameBn || '',
-        whatsappNumber: initialData.WhatsApp ? initialData.WhatsApp.toString().replace(/['"]/g, '') : '',
-        emergencyNumber: initialData.EmergencyNo ? initialData.EmergencyNo.toString().replace(/['"]/g, '') : '',
-        houseNameBn: initialData.HouseNameBn || '',
-        villageBn: initialData.VillageBn || '',
-        unionBn: initialData.UnionBn || 'সরফভাটা',
-        wardNo: initialData.WardNo || '',
-        upazilaBn: initialData.UpazilaBn || 'রাঙ্গুনিয়া',
-        districtBn: initialData.DistrictBn || 'চট্টগ্রাম',
-        imageUrl: initialData.ImageURL || ''
-      });
+      setForm({
+  sessionYear: initialData.Session || '',
+  studentId: initialData.ID || '',
+  studentNameBn: initialData.StudentNameBn || '',
+  studentNameEn: initialData.StudentNameEn || '',
+  roll: initialData.Roll || '',
+  classBn: initialData.ClassBn || '',
+  brn: initialData.BRN || '',
+  dob: parseDate(initialData.DOB),
+  bloodGroup: initialData.BloodGroup || '',
+
+  fatherNameBn: initialData.FatherNameBn || '',
+  fatherNameEn: initialData.FatherNameEn || '',
+
+  motherNameBn: initialData.MotherNameBn || '',
+  motherNameEn: initialData.MotherNameEn || '',
+
+  whatsappNumber: initialData.WhatsApp || '',
+  emergencyNumber: initialData.EmergencyNo || '',
+
+  houseNameBn: initialData.HouseNameBn || '',
+  houseNameEn: initialData.HouseNameEn || '',
+
+  villageBn: initialData.VillageBn || '',
+  villageEn: initialData.VillageEn || '',
+
+  unionBn: initialData.UnionBn || '',
+  unionEn: initialData.UnionEn || '',
+
+  upazilaBn: initialData.UpazilaBn || '',
+  upazilaEn: initialData.UpazilaEn || '',
+
+  districtBn: initialData.DistrictBn || '',
+  districtEn: initialData.DistrictEn || '',
+
+  imageUrl: initialData.ImageURL || ''
+});
       setImgPreview(initialData.ImageURL || null);
     } else {
       setForm(defaultState);
