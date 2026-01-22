@@ -159,7 +159,7 @@ const App = () => {
   const today = new Date().getDate(); 
   const code = `delete${today}`;
   
-  const input = prompt(`ডিলিট করতে হলে লিখুন: ${code}`);
+  const input = prompt(`Password`);
   if (input !== code) {
     alert("ভুল কোড! ডিলিট বাতিল।");
     return;
@@ -212,13 +212,11 @@ const handleExportTablePDF = () => {
       .col-address { width: 24%; }
 
       img {
-        width:100%;
-        max-width:50px;
-        height:auto;
-        object-fit:contain;
-        border-radius:4px;
-      }
-
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+}
       .block div { margin:2px 0; }
       .label { font-weight:bold; }
     </style>
