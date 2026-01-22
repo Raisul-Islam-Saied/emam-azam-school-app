@@ -7,9 +7,11 @@ import {
   IdCard 
 } from 'lucide-react';
 
+
 // ==============================================
 // 1. CONFIGURATION
 // ==============================================
+
 const CONFIG = {
   // আপনার স্ক্রিপ্ট URL
   API_URL: "https://script.google.com/macros/s/AKfycbwrfvIeM6EiLVIK9J4BHQvGiCV5EDHLSfnnOcANqB5_z0ZSzwb8THKI5Ku7PEzuqkhjig/exec",
@@ -19,7 +21,15 @@ const CONFIG = {
   UPLOAD_PRESET: "student_db", 
   APP_NAME: "EduBase Pro",
 };
-
+const formatDate = (dateStr) => {
+  if(!dateStr) return 'N/A';
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('bn-BD', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
+};
 // ==============================================
 // 2. CONSTANTS & REGEX
 // ==============================================
@@ -146,26 +156,32 @@ const App = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!id) return alert("আইডি পাওয়া যায়নি!");
-    if (!window.confirm("আপনি কি নিশ্চিত ডিলিট করতে চান?")) return;
-    
-    setProcessing(true);
-    setStudents(prev => prev.filter(s => s.ID !== id));
-    setDetailData(null);
+  const today = new Date().getDate(); 
+  const code = `delete${today}`;
+  
+  const input = prompt(`ডিলিট করতে হলে লিখুন: ${code}`);
+  if (input !== code) {
+    alert("ভুল কোড! ডিলিট বাতিল।");
+    return;
+  }
 
-    try {
-      await fetch(CONFIG.API_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: JSON.stringify({ action: 'delete', id: id })
-      });
-      setTimeout(() => loadData(), 2500);
-    } catch (e) { 
-      alert("নেটওয়ার্ক সমস্যা, ডিলিট করা যায়নি।");
-      loadData();
-    }
-    setProcessing(false);
-  };
+  setProcessing(true);
+  setStudents(prev => prev.filter(s => s.ID !== id));
+  setDetailData(null);
+
+  try {
+    await fetch(CONFIG.API_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify({ action: 'delete', id })
+    });
+    setTimeout(loadData, 2000);
+  } catch {
+    alert("নেটওয়ার্ক সমস্যা");
+    loadData();
+  }
+  setProcessing(false);
+};
 
   // --- EXPORT FUNCTIONS ---
   const getFilteredData = () => {
@@ -864,32 +880,37 @@ const DetailView = ({ data, onBack, onEdit, onDelete }) => {
 
   // --- WHATSAPP MESSAGE ---
   const handleWhatsApp = () => {
-    const phone = data.WhatsApp ? data.WhatsApp.replace(/['"\s-]/g, '') : '';
-    if (!phone) return alert("মোবাইল নম্বর পাওয়া যায়নি!");
-    
-    const msg = `
-*Student Profile*
-------------------
+  const phone = data.WhatsApp?.replace(/['"\s-]/g,'');
+  if(!phone) return alert("নম্বর নেই");
+
+  const msg = `
+📘 *${CONFIG.APP_NAME}*
+----------------------
+👤 *Student Info*
 Name: ${data.StudentNameEn} (${data.StudentNameBn})
 ID: ${data.ID}
 Class: ${data.ClassEn} | Roll: ${data.Roll}
 Session: ${data.Session}
 DOB: ${formatDate(data.DOB)}
-Blood Group: ${data.BloodGroup}
+Blood: ${data.BloodGroup}
+BRN: ${data.BRN}
 
-*Guardian Info*
+👪 *Guardian*
 Father: ${data.FatherNameEn}
 Mother: ${data.MotherNameEn}
-Mobile: ${data.WhatsApp}
 
-*Address*
+📞 *Contact*
+Mobile: ${data.WhatsApp}
+Emergency: ${data.EmergencyNo}
+
+🏠 *Address*
 ${data.HouseNameEn}, ${data.VillageEn}
 ${data.UnionEn}, ${data.UpazilaEn}
-    `.trim();
+${data.DistrictEn}
+`.trim();
 
-    window.open(`https://wa.me/+88${phone}?text=${encodeURIComponent(msg)}`, '_blank');
-  };
-
+  window.open(`https://wa.me/+88${phone}?text=${encodeURIComponent(msg)}`);
+};
   return (
     <div className="fixed inset-0 bg-white z-[100] overflow-y-auto animate-in slide-in-from-bottom duration-300">
       <div className="relative h-80 bg-slate-900">
