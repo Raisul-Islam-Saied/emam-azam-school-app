@@ -703,7 +703,7 @@ const FullForm = ({ initialData, onSave, onCancel }) => {
         return isNaN(d.getTime()) ? '' : d.toISOString().split('T')[0];
       };
 
-      setForm({
+      
       setForm({
   sessionYear: initialData.Session || '',
   studentId: initialData.ID || '',
