@@ -20,6 +20,11 @@ const CONFIG = {
   CLOUD_NAME: "djjnoclzp", 
   UPLOAD_PRESET: "student_db", 
   APP_NAME: "Abdur Razzaq Dakhil Madrasah ",
+  USERS: [
+    { username: "admin", password: "1234", role: "Admin" },
+    { username: "teacher", password: "1111", role: "Teacher" },
+    { username: "office", password: "2222", role: "Office" }
+  ]
 };
 const formatDate = (dateStr) => {
   if(!dateStr) return 'N/A';
@@ -89,6 +94,8 @@ const StudentRow = ({ data, onClick }) => (
 // 4. MAIN APP LOGIC
 // ==============================================
 const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
   const [tab, setTab] = useState('home');
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -388,8 +395,14 @@ const handleExportTablePDF = () => {
       (s.WhatsApp && s.WhatsApp.includes(lower))
     );
   }, [students, searchText]);
-
+  if (!isLoggedIn) {
+  return <LoginPage onLogin={() => setIsLoggedIn(true)} />;
+}
+if (!currentUser) {
+  return <LoginPage onLogin={(u) => setCurrentUser(u)} />;
+}
   return (
+    
     <div className="bg-gray-50 min-h-screen font-sans text-slate-800 pb-24">
       {processing && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex flex-col items-center justify-center text-white">
@@ -517,6 +530,60 @@ const handleExportTablePDF = () => {
            <NavTab icon={Search} label="Search" active={tab === 'search'} onClick={() => setTab('search')} />
         </div>
       )}
+    </div>
+  );
+};
+
+                                       const LoginPage = ({ onLogin }) => {
+  const [user, setUser] = useState('');
+  const [pass, setPass] = useState('');
+  const [error, setError] = useState('');
+
+  const handleLogin = () => {
+    const found = CONFIG.USERS.find(
+      u => u.username === user && u.password === pass
+    );
+
+    if (found) {
+      onLogin(found);   // পুরো user object পাঠাচ্ছি
+    } else {
+      setError("ভুল ইউজারনেম বা পাসওয়ার্ড");
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-slate-900">
+      <div className="bg-white p-8 rounded-3xl shadow-xl w-80">
+        <h2 className="text-2xl font-black text-center mb-6">
+          {CONFIG.APP_NAME}
+        </h2>
+
+        <input 
+          placeholder="Username"
+          className="w-full p-3 mb-3 border rounded-xl"
+          value={user}
+          onChange={e => setUser(e.target.value)}
+        />
+
+        <input 
+          type="password"
+          placeholder="Password"
+          className="w-full p-3 mb-3 border rounded-xl"
+          value={pass}
+          onChange={e => setPass(e.target.value)}
+        />
+
+        {error && (
+          <p className="text-red-500 text-sm mb-3">{error}</p>
+        )}
+
+        <button 
+          onClick={handleLogin}
+          className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold"
+        >
+          Login
+        </button>
+      </div>
     </div>
   );
 };
