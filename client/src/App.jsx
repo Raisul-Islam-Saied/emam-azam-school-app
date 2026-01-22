@@ -197,56 +197,61 @@ const handleExportTablePDF = () => {
   <head>
     <title>${CONFIG.APP_NAME} - Register</title>
     <style>
-      @media print { @page { size: A4; margin: 8mm; } }
+      @media print { @page { size: A4; margin: 10mm; } }
       body { font-family: sans-serif; font-size: 10px; }
-      h2 { text-align:center; margin-bottom:8px; }
-      table { width:100%; border-collapse: collapse; }
-      th, td { border:1px solid #000; padding:4px; vertical-align: top; }
-      th { background:#eee; text-align:center; }
-      img { width:45px; height:45px; object-fit:cover; }
-      .block div { margin:2px 0; }
+      .student { border-bottom: 1px dashed #000; padding: 6px 0; margin-bottom: 6px; }
+      .top { display:flex; gap:10px; align-items:center; }
+      .photo { width:50px; height:50px; object-fit:cover; border:1px solid #000; }
+      .row { margin:2px 0; }
       .label { font-weight:bold; }
     </style>
   </head>
   <body>
-    <h2>${CONFIG.APP_NAME} - Student Register</h2>
-    <table>
-      <tr>
-        <th>Photo</th>
-        <th>Basic Info</th>
-        <th>Family</th>
-        <th>Other Details</th>
-      </tr>
-      ${data.map(s => `
-        <tr>
-          <td style="text-align:center">
-            <img src="${s.ImageURL || ''}" />
-          </td>
+    <h2 style="text-align:center">${CONFIG.APP_NAME} - Student Register</h2>
 
-          <td class="block">
-            <div><span class="label">নাম:</span> ${s.StudentNameBn || ''}</div>
-            <div><span class="label">Name:</span> ${s.StudentNameEn || ''}</div>
-            <div><span class="label">ID:</span> ${s.ID || ''}</div>
-            <div><span class="label">Roll/Class:</span> ${s.Roll || ''} / ${s.ClassEn || s.ClassBn || ''}</div>
-          </td>
-
-          <td class="block">
-            <div><span class="label">পিতা:</span> ${s.FatherNameBn || ''}</div>
-            <div><span class="label">মাতা:</span> ${s.MotherNameBn || ''}</div>
-          </td>
-
-          <td class="block">
-            <div><span class="label">Mobile:</span> ${s.WhatsApp || ''}</div>
-            <div><span class="label">Blood:</span> ${s.BloodGroup || ''}</div>
-            <div><span class="label">BRN:</span> ${s.BRN || ''}</div>
-            <div><span class="label">DOB:</span> ${formatDate(s.DOB)}</div>
-            <div><span class="label">ঠিকানা:</span> 
-              ${s.HouseNameBn || ''}, ${s.VillageBn || ''}, ${s.UnionBn || ''}, ${s.UpazilaBn || ''}, ${s.DistrictBn || ''}
+    ${data.map(s => `
+      <div class="student">
+        <div class="top">
+          <img src="${s.ImageURL || ''}" class="photo"/>
+          <div>
+            <div class="row">
+              <span class="label">ID:</span> ${s.ID || ''} |
+              <span class="label">Roll:</span> ${s.Roll || ''} |
+              <span class="label">Class:</span> ${s.ClassEn || s.ClassBn || ''} |
+              <span class="label">Session:</span> ${s.Session || ''}
             </div>
-          </td>
-        </tr>
-      `).join('')}
-    </table>
+            <div class="row">
+              <span class="label">Name:</span> 
+              ${s.StudentNameBn || ''} / ${s.StudentNameEn || ''}
+            </div>
+          </div>
+        </div>
+
+        <div class="row"><span class="label">Father:</span> ${s.FatherNameBn || ''} / ${s.FatherNameEn || ''}</div>
+        <div class="row"><span class="label">Mother:</span> ${s.MotherNameBn || ''} / ${s.MotherNameEn || ''}</div>
+
+        <div class="row">
+          <span class="label">DOB:</span> ${formatDate(s.DOB)} |
+          <span class="label">Blood:</span> ${s.BloodGroup || ''} |
+          <span class="label">BRN:</span> ${s.BRN || ''}
+        </div>
+
+        <div class="row">
+          <span class="label">Mobile:</span> ${s.WhatsApp || ''} |
+          <span class="label">Emergency:</span> ${s.EmergencyNo || ''}
+        </div>
+
+        <div class="row">
+          <span class="label">Address (Bn):</span>
+          ${s.HouseNameBn || ''}, ${s.VillageBn || ''}, ${s.UnionBn || ''}, ${s.UpazilaBn || ''}, ${s.DistrictBn || ''}
+        </div>
+        <div class="row">
+          <span class="label">Address (En):</span>
+          ${s.HouseNameEn || ''}, ${s.VillageEn || ''}, ${s.UnionEn || ''}, ${s.UpazilaEn || ''}, ${s.DistrictEn || ''}
+        </div>
+      </div>
+    `).join('')}
+
     <script>window.print()</script>
   </body>
   </html>
