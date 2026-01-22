@@ -317,74 +317,135 @@ const handleExportTablePDF = () => {
   };
 
   // PDF EXPORT (ALL FIELDS PROFILE STYLE)
-  const handleExportPDF = () => {
-    const dataToExport = getFilteredData();
-    if (dataToExport.length === 0) return alert("কোনো ডাটা পাওয়া যায়নি!");
+   
+const handleExportPDF = () => {
+  const dataToExport = getFilteredData();
+  if (dataToExport.length === 0) return alert("কোনো ডাটা পাওয়া যায়নি!");
 
-    const printWindow = window.open('', '', 'height=800,width=1000');
-    printWindow.document.write('<html><head><title>Full Database Print</title>');
+  const printWindow = window.open('', '', 'height=800,width=1000');
+  printWindow.document.write('<html><head><title>Full Database Print</title>');
+  printWindow.document.write(`
+    <style>
+      @media print {
+        @page { size: A4; margin: 10mm; }
+      }
+      body { font-family: sans-serif; padding: 10px; }
+      .student-card {
+        border: 2px solid #000;
+        padding: 15px;
+        margin: 5px;
+        width: 48%;
+        display: inline-block;
+        vertical-align: top;
+        box-sizing: border-box;
+        page-break-inside: avoid;
+      }
+      .header { 
+        text-align: center; 
+        border-bottom: 2px solid #333; 
+        padding-bottom: 5px; 
+        margin-bottom: 10px; 
+      }
+      .row { display: flex; gap: 15px; }
+      .photo-box { width: 100px; text-align:center; }
+      .photo-box img { 
+        width: 100px; 
+        height: 100px; 
+        border: 1px solid #000; 
+        object-fit: contain; 
+      }
+      .info-box { flex: 1; }
+      .field-row { 
+        display: flex; 
+        border-bottom: 1px solid #eee; 
+        padding: 3px 0; 
+      }
+      .field-label { 
+        width: 130px; 
+        font-weight: bold; 
+        font-size: 11px; 
+        color: #555; 
+      }
+      .field-val { 
+        font-size: 11px; 
+        font-weight: bold; 
+      }
+      .section-title { 
+        font-size: 12px; 
+        font-weight: bold; 
+        background: #eee; 
+        padding: 2px 5px; 
+        margin-top: 6px; 
+      }
+    </style>
+  `);
+  printWindow.document.write('</head><body>');
+  
+  dataToExport.forEach(s => {
     printWindow.document.write(`
-      <style>
-        body { font-family: sans-serif; padding: 20px; }
-        .student-card { border: 2px solid #000; padding: 20px; margin-bottom: 20px; page-break-inside: avoid; }
-        .header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 15px; }
-        .row { display: flex; gap: 20px; }
-        .photo-box { width: 120px; }
-        .photo-box img { width: 120px; height: 120px; border: 1px solid #000; object-fit: cover; }
-        .info-box { flex: 1; }
-        .field-row { display: flex; border-bottom: 1px solid #eee; padding: 4px 0; }
-        .field-label { width: 140px; font-weight: bold; font-size: 12px; color: #555; }
-        .field-val { font-size: 12px; font-weight: bold; }
-        .section-title { font-size: 14px; font-weight: bold; background: #eee; padding: 2px 5px; margin-top: 10px; }
-      </style>
-    `);
-    printWindow.document.write('</head><body>');
-    
-    dataToExport.forEach(s => {
-      printWindow.document.write(`
-        <div class="student-card">
-          <div class="header">
-            <h2 style="margin:0">${CONFIG.APP_NAME}</h2>
-            <p style="margin:0; font-size:12px;">Full Student Profile | ID: ${s.ID}</p>
+      <div class="student-card">
+        <div class="header">
+          <h3 style="margin:0">${CONFIG.APP_NAME}</h3>
+          <p style="margin:0; font-size:11px;">Student Profile | ID: ${s.ID}</p>
+        </div>
+        <div class="row">
+          <div class="photo-box">
+            <img src="${s.ImageURL}" alt="Photo"/>
+            <div style="font-weight:bold; margin-top:4px;">Roll: ${s.Roll}</div>
+            <div style="font-size:11px;">Class: ${s.ClassEn}</div>
           </div>
-          <div class="row">
-            <div class="photo-box">
-              <img src="${s.ImageURL}" alt="Photo"/>
-              <div style="text-align:center; font-weight:bold; margin-top:5px;">Roll: ${s.Roll}</div>
-              <div style="text-align:center; font-size:12px;">Class: ${s.ClassEn}</div>
+          <div class="info-box">
+            <div class="section-title">BASIC INFORMATION</div>
+            <div class="field-row">
+              <div class="field-label">Name:</div>
+              <div class="field-val">
+                ${s.StudentNameBn} (${s.StudentNameEn})
+              </div>
             </div>
-            <div class="info-box">
-              <div class="section-title">BASIC INFORMATION</div>
-              <div class="field-row"><div class="field-label">Name (Bn):</div><div class="field-val">${s.StudentNameBn}</div></div>
-              <div class="field-row"><div class="field-label">Name (En):</div><div class="field-val">${s.StudentNameEn}</div></div>
-              <div class="field-row"><div class="field-label">Birth Reg No:</div><div class="field-val">${s.BRN}</div></div>
-              <div class="field-row"><div class="field-label">Date of Birth:</div><div class="field-val">${s.DOB}</div></div>
-              <div class="field-row"><div class="field-label">Blood Group:</div><div class="field-val">${s.BloodGroup}</div></div>
-              <div class="field-row"><div class="field-label">Session:</div><div class="field-val">${s.Session}</div></div>
+            <div class="field-row"><div class="field-label">Birth Reg No:</div><div class="field-val">${s.BRN}</div></div>
+            <div class="field-row"><div class="field-label">Date of Birth:</div><div class="field-val">${formatDate(s.DOB)}</div></div>
+            <div class="field-row"><div class="field-label">Blood Group:</div><div class="field-val">${s.BloodGroup}</div></div>
+            <div class="field-row"><div class="field-label">Session:</div><div class="field-val">${s.Session}</div></div>
 
-              <div class="section-title">PARENTS INFORMATION</div>
-              <div class="field-row"><div class="field-label">Father (Bn):</div><div class="field-val">${s.FatherNameBn}</div></div>
-              <div class="field-row"><div class="field-label">Father (En):</div><div class="field-val">${s.FatherNameEn}</div></div>
-              <div class="field-row"><div class="field-label">Mother (Bn):</div><div class="field-val">${s.MotherNameBn}</div></div>
-              <div class="field-row"><div class="field-label">Mother (En):</div><div class="field-val">${s.MotherNameEn}</div></div>
+            <div class="section-title">PARENTS INFORMATION</div>
+            <div class="field-row">
+              <div class="field-label">Father:</div>
+              <div class="field-val">
+                ${s.FatherNameBn} (${s.FatherNameEn})
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field-label">Mother:</div>
+              <div class="field-val">
+                ${s.MotherNameBn} (${s.MotherNameEn})
+              </div>
+            </div>
 
-              <div class="section-title">CONTACT & ADDRESS</div>
-              <div class="field-row"><div class="field-label">Mobile:</div><div class="field-val">${s.WhatsApp}</div></div>
-              <div class="field-row"><div class="field-label">Emergency:</div><div class="field-val">${s.EmergencyNo}</div></div>
-              <div class="field-row"><div class="field-label">Address (Bn):</div><div class="field-val">${s.HouseNameBn}, ${s.VillageBn}, ${s.UnionBn}, ${s.UpazilaBn}, ${s.DistrictBn}</div></div>
-              <div class="field-row"><div class="field-label">Address (En):</div><div class="field-val">${s.HouseNameEn}, ${s.VillageEn}, ${s.UnionEn}, ${s.UpazilaEn}, ${s.DistrictEn}</div></div>
-              <div class="field-row"><div class="field-label">Ward No:</div><div class="field-val">${s.WardNo}</div></div>
+            <div class="section-title">CONTACT & ADDRESS</div>
+            <div class="field-row"><div class="field-label">Mobile:</div><div class="field-val">${s.WhatsApp}</div></div>
+            <div class="field-row"><div class="field-label">Emergency:</div><div class="field-val">${s.EmergencyNo}</div></div>
+            <div class="field-row">
+              <div class="field-label">Address (Bn):</div>
+              <div class="field-val">
+                ${s.HouseNameBn}, ${s.VillageBn}, ${s.UnionBn}, ${s.UpazilaBn}, ${s.DistrictBn}
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field-label">Address (En):</div>
+              <div class="field-val">
+                ${s.HouseNameEn}, ${s.VillageEn}, ${s.UnionEn}, ${s.UpazilaEn}, ${s.DistrictEn}
+              </div>
             </div>
           </div>
         </div>
-      `);
-    });
+      </div>
+    `);
+  });
 
-    printWindow.document.write('</body></html>');
-    printWindow.document.close();
-    printWindow.print();
-  };
-
+  printWindow.document.write('</body></html>');
+  printWindow.document.close();
+  printWindow.print();
+};
   const filteredList = useMemo(() => {
     if (!searchText) return students;
     const lower = searchText.toLowerCase();
