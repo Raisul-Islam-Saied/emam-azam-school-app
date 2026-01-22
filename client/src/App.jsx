@@ -182,7 +182,7 @@ const App = () => {
   }
   setProcessing(false);
 };
-const handleExportTablePDF = () => {
+
 const handleExportTablePDF = () => {
   const data = getFilteredData();
   if(data.length === 0) return alert("ডাটা নেই");
