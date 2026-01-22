@@ -680,6 +680,7 @@ if (!currentUser) {
 // ==============================================
 
 const FullForm = ({ initialData, onSave, onCancel }) => {
+  const isUpdate = !!initialData;
   const defaultState = {
     sessionYear: new Date().getFullYear().toString(),
     studentId: '',
@@ -879,6 +880,17 @@ const FullForm = ({ initialData, onSave, onCancel }) => {
              <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Step 2: Parents Info</h3>
              <Input label="পিতার নাম (বাংলা)" val={form.fatherNameBn} set={v=>update('fatherNameBn', v)} error={errors.fatherNameBn} />
              <Input label="মাতার নাম (বাংলা)" val={form.motherNameBn} set={v=>update('motherNameBn', v)} error={errors.motherNameBn} />
+            {isUpdate && (
+  <>
+    <Input label="Father Name (English)" 
+      val={form.fatherNameEn} 
+      set={v=>update('fatherNameEn', v)} />
+
+    <Input label="Mother Name (English)" 
+      val={form.motherNameEn} 
+      set={v=>update('motherNameEn', v)} />
+  </>
+)}
              <Input label="Mobile (WhatsApp)" type="tel" val={form.whatsappNumber} set={v=>update('whatsappNumber', v)} error={errors.whatsappNumber} />
              <Input label="Emergency No" type="tel" val={form.emergencyNumber} set={v=>update('emergencyNumber', v)} />
           </div>
@@ -893,6 +905,29 @@ const FullForm = ({ initialData, onSave, onCancel }) => {
              <Input label="Ward No" type="number" val={form.wardNo} set={v=>update('wardNo', v)} error={errors.wardNo} />
              <Input label="উপজেলা (বাংলা)" val={form.upazilaBn} set={v=>update('upazilaBn', v)} />
              <Input label="জেলা (বাংলা)" val={form.districtBn} set={v=>update('districtBn', v)} />
+            {isUpdate && (
+  <>
+    <Input label="House Name (English)" 
+      val={form.houseNameEn} 
+      set={v=>update('houseNameEn', v)} />
+
+    <Input label="Village (English)" 
+      val={form.villageEn} 
+      set={v=>update('villageEn', v)} />
+
+    <Input label="Union (English)" 
+      val={form.unionEn} 
+      set={v=>update('unionEn', v)} />
+
+    <Input label="Upazila (English)" 
+      val={form.upazilaEn} 
+      set={v=>update('upazilaEn', v)} />
+
+    <Input label="District (English)" 
+      val={form.districtEn} 
+      set={v=>update('districtEn', v)} />
+  </>
+)}
           </div>
         )}
 
