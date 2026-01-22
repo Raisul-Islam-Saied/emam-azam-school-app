@@ -22,9 +22,8 @@ const CONFIG = {
   APP_NAME: "EduBase Pro",
 };
 const formatDate = (dateStr) => {
-  if(!dateStr) return '';
+  if(!dateStr) return 'N/A';
   const d = new Date(dateStr);
-  if(isNaN(d.getTime())) return dateStr;
   return d.toLocaleDateString('bn-BD', {
     day: '2-digit',
     month: '2-digit',
@@ -160,7 +159,7 @@ const App = () => {
   const today = new Date().getDate(); 
   const code = `delete${today}`;
   
-  const input = prompt(`Password`);
+  const input = prompt(`ডিলিট করতে হলে লিখুন: ${code}`);
   if (input !== code) {
     alert("ভুল কোড! ডিলিট বাতিল।");
     return;
@@ -183,7 +182,7 @@ const App = () => {
   }
   setProcessing(false);
 };
-
+const handleExportTablePDF = () => {
 const handleExportTablePDF = () => {
   const data = getFilteredData();
   if(data.length === 0) return alert("ডাটা নেই");
