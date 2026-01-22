@@ -1,94 +1,3 @@
-// import React, { Suspense, useEffect, useState } from "react";
-// import { Toaster } from "react-hot-toast";
-
-// import { Route, Routes } from "react-router-dom";
-// import Loader from "./components/Loader";
-// import Navbar from "./components/Navbar";
-// import Footer from "./components/Footer";
-// import { adminRoutes, routes } from "./Routes";
-// import DefaultLayout from "./Pages/layout/DefaultLayout";
-// import AdminHome from "./components/Admin/AdminHome";
-// import ProtectedRoute from "./Routes/ProtectedRoute";
-// import { useAuth } from "./context/AuthContext";
-// import StudentInfo from "./components/Admin/StudentInfo";
-// import Syllabus from "./components/Syllabus";
-
-// function App() {
-//   const date = new Date();
-
-//   const { authLoading } = useAuth();
-
-//   return authLoading ? (
-//     <Loader />
-//   ) : (
-//     <div
-//       className={` selection:bg-purple-500 animate-loading dark:bg-slate-900 dark:text-stone-100 font-bangla text-gray-900  bg-white strokeWidth `}
-//     >
-//       <Routes>
-//         <Route
-//           path="/*"
-//           element={
-//             <>
-//               <Navbar />
-//               <Routes>
-//                 <Route path="/student/:student_id" element={<StudentInfo />} />
-//                 <Route path="/syllabus" element={<Syllabus />} />
-//                 {routes.map((routes, index) => {
-//                   const { path, component: Component } = routes;
-//                   return (
-//                     <Route
-//                       key={index}
-//                       path={path}
-//                       element={
-//                         <Suspense fallback={<Loader />}>
-//                           <Component />
-//                         </Suspense>
-//                       }
-//                     />
-//                   );
-//                 })}
-//               </Routes>{" "}
-//               <Footer />
-//             </>
-//           }
-//         />
-//         <Route
-//           path="/dashboard/*"
-//           element={
-//             <ProtectedRoute>
-//               <Routes>
-//                 <Route element={<DefaultLayout />}>
-//                   <Route index element={<AdminHome />} />
-//                   {adminRoutes.map((routes, index) => {
-//                     const { path, component: Component } = routes;
-//                     return (
-//                       <Route
-//                         key={index}
-//                         path={path}
-//                         element={
-//                           <Suspense fallback={<Loader />}>
-//                             <Component />
-//                           </Suspense>
-//                         }
-//                       />
-//                     );
-//                   })}
-//                 </Route>
-//               </Routes>
-//             </ProtectedRoute>
-//           }
-//         />
-//       </Routes>
-//       <Toaster position="top-center" reverseOrder={true} />
-//       {/* <NotFound />
-//       <Catagories /> */}
-//       {/* <Modal /> */}
-//       {/* <Switch1 /> */}
-//     </div>
-//   );
-// }
-
-// export default App;
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Home, UserPlus, Search, Menu, X, Phone, MessageCircle, 
@@ -169,7 +78,7 @@ const StudentRow = ({ data, onClick }) => (
 // ==============================================
 // 4. MAIN APP LOGIC
 // ==============================================
-const SchoolAppFinal = () => {
+const App = () => {
   const [tab, setTab] = useState('home');
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -290,7 +199,7 @@ const SchoolAppFinal = () => {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `Full_Student_Data_${exportClass}_${new Date().toLocaleDateString()}.csv`);
+    link.setAttribute("download", `Student_Data_${exportClass}_${new Date().toLocaleDateString()}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -776,7 +685,6 @@ const DetailView = ({ data, onBack, onEdit, onDelete }) => {
     } catch(e) { return dateStr; }
   };
 
-  // --- ID CARD PRINT FUNCTION (A4 Size Centered) ---
   const handlePrintIDCard = () => {
     const w = window.open('','_blank');
     w.document.write(`
@@ -944,16 +852,42 @@ const DetailView = ({ data, onBack, onEdit, onDelete }) => {
             <div class="section">Address Details</div>
             <div class="row"><span class="label">House:</span><span class="value">${data.HouseNameEn} (${data.HouseNameBn})</span></div>
             <div class="row"><span class="label">Village:</span><span class="value">${data.VillageEn} (${data.VillageBn})</span></div>
-            <div class="row"><span class="label">Union:</span><span class="value">${data.UnionEn} (${data.UnionBn})</span></div>
-            <div class="row"><span class="label">Ward:</span><span class="value">${data.WardNo}</span></div>
-            <div class="row"><span class="label">Upazila:</span><span class="value">${data.UpazilaEn} (${data.UpazilaBn})</span></div>
-            <div class="row"><span class="label">District:</span><span class="value">${data.DistrictEn} (${data.DistrictBn})</span></div>
+            <div class="row"><span class="label">Union/Ward:</span><span class="value">${data.UnionEn} (${data.UnionBn}) / Ward ${data.WardNo}</span></div>
+            <div class="row"><span class="label">Area:</span><span class="value">${data.UpazilaEn}, ${data.DistrictEn}</span></div>
           </div>
           <script>window.print();</script>
         </body>
       </html>
     `);
     w.document.close();
+  };
+
+  // --- WHATSAPP MESSAGE ---
+  const handleWhatsApp = () => {
+    const phone = data.WhatsApp ? data.WhatsApp.replace(/['"\s-]/g, '') : '';
+    if (!phone) return alert("মোবাইল নম্বর পাওয়া যায়নি!");
+    
+    const msg = `
+*Student Profile*
+------------------
+Name: ${data.StudentNameEn} (${data.StudentNameBn})
+ID: ${data.ID}
+Class: ${data.ClassEn} | Roll: ${data.Roll}
+Session: ${data.Session}
+DOB: ${formatDate(data.DOB)}
+Blood Group: ${data.BloodGroup}
+
+*Guardian Info*
+Father: ${data.FatherNameEn}
+Mother: ${data.MotherNameEn}
+Mobile: ${data.WhatsApp}
+
+*Address*
+${data.HouseNameEn}, ${data.VillageEn}
+${data.UnionEn}, ${data.UpazilaEn}
+    `.trim();
+
+    window.open(`https://wa.me/+88${phone}?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
   return (
@@ -978,8 +912,10 @@ const DetailView = ({ data, onBack, onEdit, onDelete }) => {
           {data.BloodGroup && <span className="px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider bg-red-100 text-red-700">{data.BloodGroup}</span>}
         </div>
 
-        {/* --- NEW PRINT BUTTONS --- */}
-        <div className="flex justify-center gap-6 mt-8 mb-10 pb-10 border-b border-gray-100">
+        {/* --- ACTION BUTTONS --- */}
+        <div className="flex justify-center gap-4 mt-8 mb-6 pb-6 border-b border-gray-100 flex-wrap">
+          <ActionBtn icon={Phone} label="Call" bg="bg-emerald-50 text-emerald-600" onClick={() => window.open(`tel:${data.WhatsApp ? data.WhatsApp.replace(/['"]/g, '') : ''}`)} />
+          <ActionBtn icon={MessageCircle} label="WhatsApp" bg="bg-emerald-500 text-white shadow-emerald-200" onClick={handleWhatsApp} />
           <ActionBtn icon={CreditCard} label="ID Card" bg="bg-indigo-500 text-white shadow-indigo-200" onClick={handlePrintIDCard} />
           <ActionBtn icon={FileText} label="Print Info" bg="bg-slate-800 text-white shadow-slate-300" onClick={handlePrintProfile} />
         </div>
@@ -989,10 +925,11 @@ const DetailView = ({ data, onBack, onEdit, onDelete }) => {
              {l: 'Father Name', v: `${data.FatherNameEn} (${data.FatherNameBn})`},
              {l: 'Mother Name', v: `${data.MotherNameEn} (${data.MotherNameBn})`},
            ]}/>
-           <InfoCard title="Personal Info" icon={Shield} items={[
+           <InfoCard title="Contact & Personal" icon={Shield} items={[
+             {l: 'Mobile', v: data.WhatsApp},
+             {l: 'Emergency', v: data.EmergencyNo},
              {l: 'Date of Birth', v: formatDate(data.DOB)},
              {l: 'BRN', v: data.BRN ? data.BRN.toString().replace(/['"]/g, '') : ''},
-             {l: 'Emergency', v: data.EmergencyNo ? data.EmergencyNo.toString().replace(/['"]/g, '') : ''},
            ]}/>
            <InfoCard title="Address Details" icon={MapPin} items={[
              {l: 'House', v: `${data.HouseNameEn} (${data.HouseNameBn})`},
@@ -1041,4 +978,6 @@ const InfoCard = ({ title, icon: Icon, items }) => (
   </div>
 );
 
-export default SchoolAppFinal;
+export default App;
+
+
