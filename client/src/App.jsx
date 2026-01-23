@@ -268,9 +268,9 @@ const App = () => {
       <title>${CONFIG.APP_NAME} - Register</title>
       <style>
         @media print { @page { size: A4; margin: 8mm; } }
-        body { font-family: sans-serif; font-size: 10px; }
+        body { font-family: sans-serif; font-size: 15px; }
         h2 { text-align:center; margin-bottom:8px; }
-        table { width:100%; border-collapse: collapse; table-layout: fixed; }
+        table { width:100%; font-size: 15px; border-collapse: collapse; table-layout: fixed; }
         th, td { border:1px solid #000; padding:5px; vertical-align: top; }
         th { background:#eee; text-align:center; }
         .col-small { width: 12%; text-align:center; }
@@ -298,9 +298,9 @@ const App = () => {
               <img src="${s.ImageURL || ''}" />
             </td>
             <td class="col-name block">
-              <div><span class="label">নাম:</span> ${s.StudentNameBn || ''}</div>
-              <div><span class="label">Name:</span> ${s.StudentNameEn || ''}</div>
-              <div><span class="label">ID:</span> ${s.ID || ''}</div>
+              <div><span class="label"> ${s.StudentNameBn || ''}</span></div>
+              <div><span class="label"> ${s.StudentNameEn || ''}</span></div>
+              <div><span class="label"> ${s.ID || ''}</span></div>
             </td>
             <td class="col-small block">
               <div><span class="label">Class:</span> ${s.ClassEn || s.ClassBn || ''}</div>
@@ -357,97 +357,175 @@ const App = () => {
     link.download = `Student_Data_${exportClass}_${new Date().toLocaleDateString()}.csv`;
     link.click();
   };
+
 const handleExportPDF = () => {
   const dataToExport = getFilteredData();
   if (dataToExport.length === 0) return alert("কোনো ডাটা পাওয়া যায়নি!");
 
-  // উইন্ডো '_blank' ব্যবহার করা ভালো, এবং সেটাকে ফোকাস করা হবে
-  const printWindow = window.open('', '_blank', 'height=800,width=1000');
+  const printWindow = window.open('', '_blank', 'height=900,width=1100');
   if (!printWindow) {
-    return alert("পপআপ ব্লক হয়েছে — অনুগ্রহ করে ব্রাউজারের পপআপ ব্লকার অক্ষম করুন।");
+    return alert("পপআপ ব্লক হয়েছে!");
   }
 
-  printWindow.document.write('<html><head><title>Full Database Print</title>');
   printWindow.document.write(`
+  <html>
+  <head>
+    <title>Student Information Sheet</title>
     <style>
-      @media print { @page { size: A4; margin: 10mm; } }
-      body { font-family: sans-serif; padding: 10px; }
-      .page { height: 100%; page-break-after: always; }
-      .student-card { border: 2px solid #000; padding: 15px; margin-bottom: 10px; width: 100%; height: 48%; box-sizing: border-box; page-break-inside: avoid; }
-      .header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 5px; margin-bottom: 10px; }
-      .row { display: flex; gap: 15px; }
-      .photo-box { width: 100px; text-align:center; }
-      .photo-box img { width: 100px; height: 100px; border: 1px solid #000; object-fit: contain; }
-      .info-box { flex: 1; }
-      .field-row { display: flex; border-bottom: 1px solid #eee; padding: 3px 0; }
-      .field-label { width: 130px; font-weight: bold; font-size: 11px; color: #555; }
-      .field-val { font-size: 11px; font-weight: bold; }
-      .section-title { font-size: 12px; font-weight: bold; background: #eee; padding: 2px 5px; margin-top: 6px; }
+      @media print {
+        @page { size: A4; margin: 10mm; }
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 11px;
+        margin: 0;
+      }
+
+      .page {
+        page-break-after: always;
+      }
+
+      .student-card {
+        border: 2px solid #000;
+        padding: 8px;
+        margin-bottom: 8px;
+        height: 48%;
+        box-sizing: border-box;
+      }
+
+      .header {
+        text-align: center;
+        border-bottom: 2px solid #000;
+        margin-bottom: 6px;
+      }
+
+      .header h2 {
+        margin: 0;
+        font-size: 14px;
+      }
+
+      .header p {
+        margin: 0;
+        font-size: 11px;
+      }
+
+      .top-row {
+        display: flex;
+        gap: 10px;
+      }
+
+      .photo-box {
+        width: 110px;
+        text-align: center;
+      }
+
+      .photo-box img {
+        width: 100px;
+        height: 110px;
+        border: 1px solid #000;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      td {
+        border: 1px solid #000;
+        padding: 3px;
+        vertical-align: top;
+      }
+
+      .label {
+        width: 35%;
+        font-weight: bold;
+      }
+
+      .footer {
+        margin-top: 8px;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .sign {
+        border-top: 1px solid #000;
+        width: 150px;
+        text-align: center;
+        font-size: 10px;
+      }
     </style>
+  </head>
+  <body>
   `);
-  printWindow.document.write('</head><body>');
 
   dataToExport.forEach((s, i) => {
     if (i % 2 === 0) printWindow.document.write(`<div class="page">`);
+
     printWindow.document.write(`
       <div class="student-card">
         <div class="header">
-          <h3 style="margin:0">${CONFIG.APP_NAME}</h3>
-          <p style="margin:0; font-size:11px;">Student Profile | ID: ${s.ID}</p>
+          <h2>${CONFIG.APP_NAME}</h2>
+          <p>Student Information</p>
         </div>
-        <div class="row">
+
+        <div class="top-row">
           <div class="photo-box">
-            <img src="${s.ImageURL || ''}" alt="Photo"/>
-            <div style="font-weight:bold; margin-top:4px;">Roll: ${s.Roll}</div>
-            <div style="font-size:11px;">Class: ${s.ClassEn || s.ClassBn}</div>
+            <img src="${s.ImageURL || ''}">
+            <div>Roll: ${s.Roll}</div>
+            <div>Class: ${s.ClassEn || s.ClassBn}</div>
           </div>
-          <div class="info-box">
-            <div class="section-title">BASIC INFORMATION</div>
-            <div class="field-row"><div class="field-label">Name:</div><div class="field-val">${s.StudentNameBn} (${s.StudentNameEn})</div></div>
-            <div class="field-row"><div class="field-label">Birth Reg No:</div><div class="field-val">${s.BRN}</div></div>
-            <div class="field-row"><div class="field-label">Date of Birth:</div><div class="field-val">${formatDate(s.DOB)}</div></div>
-            <div class="field-row"><div class="field-label">Blood Group:</div><div class="field-val">${s.BloodGroup}</div></div>
-            <div class="field-row"><div class="field-label">Session:</div><div class="field-val">${s.Session}</div></div>
 
-            <div class="section-title">PARENTS INFORMATION</div>
-            <div class="field-row"><div class="field-label">Father:</div><div class="field-val">${s.FatherNameBn} (${s.FatherNameEn})</div></div>
-            <div class="field-row"><div class="field-label">Mother:</div><div class="field-val">${s.MotherNameBn} (${s.MotherNameEn})</div></div>
+          <table>
+            <tr><td class="label">শিক্ষার্থীর নাম :</td><td>${s.StudentNameBn}</td></tr>
+            <tr><td class="label">Student's Name :</td><td>${s.StudentNameEn}</td></tr>
+            <tr><td class="label">জন্ম নিবন্ধন নং :</td><td>${s.BRN}</td></tr>
+            <tr><td class="label">Date of Birth :</td><td>${formatDate(s.DOB)}</td></tr>
+            <tr><td class="label">Blood Group :</td><td>${s.BloodGroup}</td></tr>
+            <tr><td class="label">Session :</td><td>${s.Session}</td></tr>
 
-            <div class="section-title">CONTACT & ADDRESS</div>
-            <div class="field-row"><div class="field-label">Mobile:</div><div class="field-val">${s.WhatsApp}</div></div>
-            <div class="field-row"><div class="field-label">Emergency:</div><div class="field-val">${s.EmergencyNo}</div></div>
-            <div class="field-row"><div class="field-label">Address (Bn):</div><div class="field-val">${s.HouseNameBn || ''}, ${s.VillageBn || ''}, ${s.UnionBn || ''}, ${s.UpazilaBn || ''}, ${s.DistrictBn || ''}</div></div>
-            <div class="field-row"><div class="field-label">Address (En):</div><div class="field-val">${s.HouseNameEn || ''}, ${s.VillageEn || ''}, ${s.UnionEn || ''}, ${s.UpazilaEn || ''}, ${s.DistrictEn || ''}</div></div>
-          </div>
+            <tr><td class="label">পিতার নাম :</td><td>${s.FatherNameBn}</td></tr>
+            <tr><td class="label">Father's Name :</td><td>${s.FatherNameEn}</td></tr>
+            <tr><td class="label">মাতার নাম :</td><td>${s.MotherNameBn}</td></tr>
+            <tr><td class="label">Mother's Name :</td><td>${s.MotherNameEn}</td></tr>
+
+            <tr><td class="label">মোবাইল :</td><td>${s.WhatsApp}</td></tr>
+            <tr><td class="label">জরুরী নম্বর :</td><td>${s.EmergencyNo}</td></tr>
+
+            <tr><td class="label">ঠিকানা (বাংলা) :</td>
+              <td>${s.HouseNameBn || ''}, ${s.VillageBn || ''}, ${s.UnionBn || ''}, ${s.UpazilaBn || ''}, ${s.DistrictBn || ''}</td>
+            </tr>
+
+            <tr><td class="label">Address (English) :</td>
+              <td>${s.HouseNameEn || ''}, ${s.VillageEn || ''}, ${s.UnionEn || ''}, ${s.UpazilaEn || ''}, ${s.DistrictEn || ''}</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="footer">
+          <div class="sign">Guardian's Signature</div>
+          <div class="sign">Head Teacher</div>
         </div>
       </div>
     `);
-    if (i % 2 === 1 || i === dataToExport.length - 1) printWindow.document.write(`</div>`);
+
+    if (i % 2 === 1 || i === dataToExport.length - 1)
+      printWindow.document.write(`</div>`);
   });
 
-  // স্ক্রিপ্ট: সব element লোড হওয়ার পরে প্রিন্ট চালাবে
   printWindow.document.write(`
     <script>
-      function tryPrint() {
-        try {
-          window.focus();
-          // কিছু ইমেজ লোড হতে সময় লাগতে পারে — একটু ডিলে রাখি
-          setTimeout(function(){ window.print(); }, 400);
-        } catch(e) {
-          console.error(e);
-        }
-      }
-      if (document.readyState === 'complete') {
-        tryPrint();
-      } else {
-        window.addEventListener('load', tryPrint);
+      window.onload = function() {
+        window.print();
       }
     <\/script>
+  </body></html>
   `);
 
-  printWindow.document.write('</body></html>');
   printWindow.document.close();
 };
+
+
 
   const filteredList = useMemo(() => {
     if (!searchText) return roleFilteredStudents;
@@ -868,11 +946,11 @@ const FullForm = ({ initialData, onSave, onCancel }) => {
                </select>
              </div>
              
-             <Input label="BRN" type="number" val={form.brn} set={v=>update('brn', v)} error={errors.brn} />
-             <Input label="DOB" type="date" val={form.dob} set={v=>update('dob', v)} error={errors.dob} />
+             <Input label="BIRTH REGISTRATION NUMBER" type="number" val={form.brn} set={v=>update('brn', v)} error={errors.brn} />
+             <Input label="DATE OF BIRTH" type="date" val={form.dob} set={v=>update('dob', v)} error={errors.dob} />
              
              <div className="relative pt-1 w-full">
-                 <label className="text-[10px] font-bold text-gray-400 uppercase ml-1">Blood</label>
+                 <label className="text-[10px] font-bold text-gray-400 uppercase ml-1">Blood Group</label>
                  <select className="w-full p-4 bg-gray-50 rounded-xl font-bold outline-none border border-transparent" value={form.bloodGroup} onChange={e=>update('bloodGroup', e.target.value)}>
                     <option value="">N/A</option>
                     {['A+', 'B+', 'O+', 'AB+', 'A-', 'B-', 'O-', 'AB-'].map(c=><option key={c} value={c}>{c}</option>)}
@@ -992,126 +1070,147 @@ const DetailView = ({ data, onBack, onEdit, onDelete }) => {
       return d.toLocaleDateString('bn-BD'); 
     } catch(e) { return dateStr; }
   };
+const handlePrintIDCard = () => {
+  const w = window.open('', '_blank');
+  w.document.write(`
+  <html>
+    <head>
+      <title>ID Card: ${data.ID}</title>
+      <style>
+        @media print {
+          @page { size: A4; margin: 0; }
+          body { background: white; }
+        }
 
-  const handlePrintIDCard = () => {
-    const w = window.open('','_blank');
-    w.document.write(`
-      <html>
-        <head>
-          <title>ID Card: ${data.ID}</title>
-          <style>
-            @media print { @page { size: A4; margin: 0; } }
-            body { 
-              font-family: 'Segoe UI', sans-serif; 
-              display: flex; 
-              justify-content: center; 
-              align-items: center; 
-              height: 100vh; 
-              background: #f3f4f6; 
-              margin: 0;
-            }
-            .id-card {
-              width: 324px; /* CR80 Size + bleed */
-              height: 500px;
-              background: #fff;
-              border-radius: 10px;
-              box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-              overflow: hidden;
-              position: relative;
-              border: 1px solid #ddd;
-              text-align: center;
-            }
-            .header {
-              background: #1e3a8a;
-              color: white;
-              padding: 15px 0;
-            }
-            .header h2 { margin: 0; font-size: 16px; text-transform: uppercase; }
-            .header p { margin: 0; font-size: 10px; opacity: 0.8; }
-            
-            .photo {
-              width: 100px;
-              height: 100px;
-              border-radius: 50%;
-              border: 3px solid #1e3a8a;
-              object-fit: cover;
-              margin-top: 20px;
-            }
-            
-            .name-section { margin-top: 10px; }
-            .name-en { font-size: 16px; font-weight: bold; color: #333; margin: 0; }
-            .name-bn { font-size: 14px; color: #666; margin: 2px 0 0 0; }
-            .student-id { 
-              display: inline-block; 
-              background: #1e3a8a; 
-              color: white; 
-              padding: 4px 10px; 
-              border-radius: 15px; 
-              font-size: 12px; 
-              font-weight: bold; 
-              margin-top: 5px; 
-            }
-            
-            .details-grid {
-              margin-top: 20px;
-              padding: 0 20px;
-              text-align: left;
-              font-size: 12px;
-            }
-            .row { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding: 4px 0; }
-            .label { font-weight: bold; color: #555; }
-            .value { font-weight: bold; color: #222; }
+        body {
+          font-family: 'Segoe UI', Arial, sans-serif;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          margin: 0;
+          background: #f3f4f6;
+        }
 
-            .footer {
-              position: absolute;
-              bottom: 0;
-              width: 100%;
-              background: #1e3a8a;
-              height: 10px;
-            }
-            .principal {
-              position: absolute;
-              bottom: 30px;
-              right: 20px;
-              text-align: center;
-              width: 80px;
-              border-top: 1px solid #333;
-              font-size: 8px;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="id-card">
-            <div class="header">
-              <h2>${CONFIG.APP_NAME}</h2>
-              <p>Rangunia, Chattogram</p>
-            </div>
-            
-            <img src="${data.ImageURL}" class="photo" />
-            
-            <div class="name-section">
-              <h3 class="name-en">${data.StudentNameEn}</h3>
-              <p class="name-bn">${data.StudentNameBn}</p>
-              <div class="student-id">ID: ${data.ID}</div>
-            </div>
+        .id-card {
+          width: 324px;
+          height: 500px;
+          background: #fff;
+          border-radius: 10px;
+          overflow: hidden;
+          border: 2px solid #1e3a8a;
+          text-align: center;
+          position: relative;
+        }
 
-            <div class="details-grid">
-              <div class="row"><span class="label">Class</span><span class="value">${data.ClassEn}</span></div>
-              <div class="row"><span class="label">Roll</span><span class="value">${data.Roll}</span></div>
-              <div class="row"><span class="label">Blood</span><span class="value">${data.BloodGroup}</span></div>
-              <div class="row"><span class="label">Mobile</span><span class="value">${data.WhatsApp}</span></div>
-              <div class="row"><span class="label">Father</span><span class="value">${data.FatherNameBn}</span></div>
-            </div>
+        .header {
+          background: #1e3a8a;
+          color: white;
+          padding: 12px 0;
+        }
 
-            <div class="principal">Principal</div>
-            <div class="footer"></div>
-          </div>
-        </body>
-      </html>
-    `);
-    w.document.close();
-  };
+        .header h2 { margin: 0; font-size: 16px; }
+        .header p { margin: 0; font-size: 10px; opacity: 0.8; }
 
+        .photo {
+          width: 100px;
+          height: 100px;
+          border-radius: 50%;
+          border: 3px solid #1e3a8a;
+          object-fit: cover;
+          margin-top: 15px;
+        }
+
+        .name-section { margin-top: 8px; }
+        .name-en { font-size: 15px; font-weight: bold; }
+        .name-bn { font-size: 13px; color: #555; }
+        .student-id { 
+          display: inline-block; 
+          background: #1e3a8a; 
+          color: white; 
+          padding: 3px 10px; 
+          border-radius: 12px; 
+          font-size: 12px; 
+          margin-top: 4px;
+        }
+
+        .details-grid {
+          margin-top: 12px;
+          padding: 0 20px;
+          text-align: left;
+          font-size: 11px;
+        }
+
+        .row { 
+          display: flex; 
+          justify-content: space-between; 
+          border-bottom: 1px solid #eee; 
+          padding: 3px 0; 
+        }
+
+        .label { font-weight: bold; color: #555; }
+        .value { font-weight: bold; color: #222; }
+
+        .footer {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          background: #1e3a8a;
+          height: 12px;
+        }
+
+        .principal {
+          position: absolute;
+          bottom: 25px;
+          right: 20px;
+          text-align: center;
+          width: 80px;
+          border-top: 1px solid #333;
+          font-size: 8px;
+        }
+      </style>
+    </head>
+
+    <body>
+      <div class="id-card">
+        <div class="header">
+          <h2>${CONFIG.APP_NAME}</h2>
+          <p>Rangunia, Chattogram</p>
+        </div>
+
+        <img src="${data.ImageURL}" class="photo" />
+
+        <div class="name-section">
+          <div class="name-en">${data.StudentNameEn}</div>
+          <div class="name-bn">${data.StudentNameBn}</div>
+          <div class="student-id">ID: ${data.ID}</div>
+        </div>
+
+        <div class="details-grid">
+          <div class="row"><span class="label">Class</span><span class="value">${data.ClassEn}</span></div>
+          <div class="row"><span class="label">Roll</span><span class="value">${data.Roll}</span></div>
+                   <div class="row"><span class="label">Father</span><span class="value">${data.FatherNameBn}</span></div>
+          <div class="row"><span class="label">Mother</span><span class="value">${data.MotherNameBn}</span></div> 
+          <div class="row"><span class="label">DOB</span><span class="value">${formatDate(data.DOB)}</span></div>
+          <div class="row"><span class="label">Blood</span><span class="value">${data.BloodGroup}</span></div>
+          <div class="row"><span class="label">Mobile</span><span class="value">${data.WhatsApp}</span></div>
+
+<div class="row"><span class="label">Address</span><span class="value">${data.HouseNameBn}, ${data.VillageBn}
+</span></div>
+<div class="row"><span class="label"></span><span class="value">
+${data.UnionBn}, ${data.UpazilaBn}
+${data.DistrictBn}</span></div>
+        </div>
+
+        <div class="principal">Principal</div>
+        <div class="footer"></div>
+      </div>
+    </body>
+  </html>
+  `);
+
+  w.document.close();
+};
   const handlePrintProfile = () => {
     const w = window.open('','_blank');
     w.document.write(`
@@ -1174,10 +1273,11 @@ const DetailView = ({ data, onBack, onEdit, onDelete }) => {
   if(!phone) return alert("নম্বর নেই");
 
   const msg = `
-📘 *${CONFIG.APP_NAME}*
-----------------------
+     *${CONFIG.APP_NAME}*
+================================
 👤 *Student Info*
-Name: ${data.StudentNameEn} (${data.StudentNameBn})
+Name: ${data.StudentNameEn}
+নাম:(${data.StudentNameBn})
 ID: ${data.ID}
 Class: ${data.ClassEn} | Roll: ${data.Roll}
 Session: ${data.Session}
@@ -1186,8 +1286,10 @@ Blood: ${data.BloodGroup}
 BRN: ${data.BRN}
 
 👪 *Guardian*
-Father: ${data.FatherNameEn}
-Mother: ${data.MotherNameEn}
+পিতার নাম: ${data.FatherNameEn}
+Father's Name: ${data.FatherNameEn}
+মাতার নাম: ${data.MotherNameEn}
+Mother's Name: ${data.MotherNameEn}
 
 📞 *Contact*
 Mobile: ${data.WhatsApp}
@@ -1198,7 +1300,10 @@ ${data.HouseNameEn}, ${data.VillageEn}
 ${data.UnionEn}, ${data.UpazilaEn}
 ${data.DistrictEn}
 `.trim();
-
+${data.HouseNameBn}, ${data.VillageBn}
+${data.UnionBn}, ${data.UpazilaBn}
+${data.DistrictBn}
+`.trim();
   window.open(`https://wa.me/+88${phone}?text=${encodeURIComponent(msg)}`);
 };
   return (
