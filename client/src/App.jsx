@@ -466,7 +466,7 @@ const handleExportPDF = () => {
       <div class="student-card">
         <div class="header">
           <h2>${CONFIG.APP_NAME}</h2>
-          <p>Student Information</p>
+          <p>Student Information Form</p>
         </div>
 
         <div class="top-row">
@@ -1273,11 +1273,10 @@ ${data.DistrictBn}</span></div>
   if(!phone) return alert("নম্বর নেই");
 
   const msg = `
-     *${CONFIG.APP_NAME}*
-================================
+📘 *${CONFIG.APP_NAME}*
+----------------------
 👤 *Student Info*
-Name: ${data.StudentNameEn}
-নাম:(${data.StudentNameBn})
+Name: ${data.StudentNameEn} (${data.StudentNameBn})
 ID: ${data.ID}
 Class: ${data.ClassEn} | Roll: ${data.Roll}
 Session: ${data.Session}
@@ -1286,10 +1285,8 @@ Blood: ${data.BloodGroup}
 BRN: ${data.BRN}
 
 👪 *Guardian*
-পিতার নাম: ${data.FatherNameEn}
-Father's Name: ${data.FatherNameEn}
-মাতার নাম: ${data.MotherNameEn}
-Mother's Name: ${data.MotherNameEn}
+Father: ${data.FatherNameEn}
+Mother: ${data.MotherNameEn}
 
 📞 *Contact*
 Mobile: ${data.WhatsApp}
@@ -1300,10 +1297,7 @@ ${data.HouseNameEn}, ${data.VillageEn}
 ${data.UnionEn}, ${data.UpazilaEn}
 ${data.DistrictEn}
 `.trim();
-${data.HouseNameBn}, ${data.VillageBn}
-${data.UnionBn}, ${data.UpazilaBn}
-${data.DistrictBn}
-`.trim();
+
   window.open(`https://wa.me/+88${phone}?text=${encodeURIComponent(msg)}`);
 };
   return (
