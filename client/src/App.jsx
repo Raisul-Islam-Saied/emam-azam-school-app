@@ -38,7 +38,8 @@ const CONFIG = {
 
 // ROLE MAPPING (Email to Role)
 const USER_ROLES = {
-  "admin@madrasah.com":   { role: "Admin" },
+  "admin@adrm.com":   { role: "Admin" },
+  "play@adrm.com":  { role: "Class", classBn: "প্লে" },
   "class1@madrasah.com":  { role: "Class", classBn: "১ম" },
   "class2@madrasah.com":  { role: "Class", classBn: "২য়" },
   "class3@madrasah.com":  { role: "Class", classBn: "৩য়" },
